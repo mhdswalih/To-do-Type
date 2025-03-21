@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        /* General Styles */
+        body {
+            background-color: #121212;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* To-Do Card */
+        .todo-card {
+            background: linear-gradient(135deg, #1e1e2e, #252836);
+            width: 100%;
+            max-width: 450px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        h1 {
+            color: #ff4d6d;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        /* Form Styling */
+        .formElements {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .addinp {
+            flex: 1;
+            height: 45px;
+            padding: 10px;
+            border: 2px solid #ff4d6d;
+            border-radius: 8px;
+            background: #282a36;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .addinp:focus {
+            border-color: #ff758f;
+            box-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+        }
+
+        .add-btn {
+            height: 45px;
+            width: 50px;
+            background-color: #ff4d6d;
+            border: none;
+            border-radius: 8px;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background-color: #ff758f;
+            transform: scale(1.1);
+        }
+
+        /* Task List */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #282a36;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+
+        .task-item:hover {
+            transform: scale(1.03);
+            background: #343746;
+        }
+
+        .task-title {
+            color: white;
+            font-size: 16px;
+            flex: 1;
+        }
+
+        .task-done {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn, .delete-btn, .done-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .edit-btn {
+            color: #ffd700;
+        }
+
+        .delete-btn {
+            color: #ff4d4d;
+        }
+
+        .done-btn {
+            color: #4caf50;
+        }
+
+        .edit-btn:hover {
+            color: #ffcc00;
+        }
+
+        .delete-btn:hover {
+            color: #ff1a1a;
+        }
+
+        .done-btn:hover {
+            color: #66bb6a;
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-card">
+        <h1>📋 To-Do List</h1>
+
+        <!-- Add Task Form -->
+        <form id="addForm">
+            <div class="formElements">
+                <input class="addinp" name="title" id="todotext" type="text" placeholder="Add a new task...">
+                <button type="submit" class="add-btn">+</button>
+            </div>
+        </form>
+
+        <!-- Task List -->
+        <ul id="todoUl">
+            <% if(tasks.length == 0){ %>
+                <li class="task-item text-center text-muted">No tasks yet. Start adding one! 🚀</li>
+            <% } else { %>
+                <% tasks.forEach((task) => { %>
+                    <li class="task-item <%= task.status == 'done' ? 'task-done' : '' %>">
+                        <span class="task-title" id="task-title-<%= task.id %>">
+                            <%= task.title %>
+                        </span>
+
+                        <div class="actions">
+                            <% if(task.status == 'pending'){ %>
+                                <button class="edit-btn edit-action" data-task-id="<%= task.id %>">
+                                    <i class="fas fa-edit"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 20h9"></path>
+                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+                                      </svg></i>
+                                </button>
+                            <% } %>
+
+                            <button class="delete-btn delete-action" data-task-id="<%= task.id %>">
+                                <i class="fas fa-trash"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 6h18"></path>
+                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <path d="M10 11v6"></path>
+                                    <path d="M14 11v6"></path>
+                                    <path d="M5 6h14v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6z"></path>
+                                  </svg></i>
+                            </button>
+
+                            <button class="done-btn done-action" data-task-id="<%= task.id %>">
+                                <i class="fas <%= task.status == 'done' ? 'fa-undo' : 'fa-check' %>">kk</i>
+                            </button>
+                        </div>
+                    </li>
+                <% }) %>
+            <% } %>
+        </ul>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="/script.js"></script>
+</body>
+</html>
