@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const addForm = document.getElementById('addForm');
 const taskList = document.getElementById('todoUl');
-console.log(addForm, 'this is task list');
 // Add Task
 addForm.addEventListener('submit', (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
@@ -40,6 +39,7 @@ taskList.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, 
     const doneButton = target.closest('.done-action');
     const editButton = target.closest('.edit-action');
     const saveButton = target.closest('.save-btn');
+    console.log(editButton, 'this is editbutton');
     if (deleteButton) {
         // Delete Task
         const taskId = deleteButton.getAttribute('data-task-id');
@@ -48,7 +48,7 @@ taskList.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, 
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: taskId })
+            // body: JSON.stringify({ id: taskId })
         });
         if (response.ok) {
             location.reload();
@@ -60,12 +60,12 @@ taskList.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, 
     else if (doneButton) {
         // Toggle Task Status
         const taskId = doneButton.getAttribute('data-task-id');
-        const response = yield fetch('/complete-task', {
+        const response = yield fetch(`/complete-task/${taskId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: taskId })
+            // body: JSON.stringify({ id: taskId })
         });
         if (response.ok) {
             location.reload();
@@ -77,12 +77,16 @@ taskList.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, 
     else if (editButton) {
         // Edit Task
         const id = editButton.getAttribute('data-task-id');
+        console.log(id, 'thsi is id form edit');
         const spanElement = document.getElementById(`task-title-${id}`);
+        console.log(spanElement, 'thsi is span element edit');
         const inputElement = document.createElement('input');
+        console.log(inputElement, 'this is input element');
         inputElement.type = 'text';
         inputElement.value = spanElement.innerText;
         inputElement.id = `edit-input-${id}`;
         spanElement.replaceWith(inputElement);
+        console.log(inputElement.value, 'this is input elemnt value ');
         inputElement.focus();
         // Change the Edit button to a Save button
         editButton.textContent = 'Save';
@@ -93,12 +97,13 @@ taskList.addEventListener('click', (event) => __awaiter(void 0, void 0, void 0, 
         // Save Edited Task
         const id = saveButton.getAttribute('data-task-id');
         const title = (document.getElementById(`edit-input-${id}`));
-        const response = yield fetch('/edit-task', {
+        console.log(title, 'this is edit taks');
+        const response = yield fetch(`/edit-task/${id}/${title.value}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: id, title: title.value })
+            // body: JSON.stringify({ id: id, title: title.value })
         });
         if (response.ok) {
             location.reload();

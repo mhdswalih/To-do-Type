@@ -39,6 +39,6 @@ const router = (0, express_1.Router)();
 router.get('/', TodoController.loadHome);
 router.post('/add-task/:title', TodoController.addTask);
 router.delete('/delete-task/:taskId', TodoController.deleteTask);
-router.patch('/complete-task', TodoController.completeTask);
-router.put('/edit-task', TodoController.editTask);
+router.patch('/complete-task/:taskId', TodoController.completeTask);
+router.put('/edit-task/:id/:title', TodoController.editTask);
 exports.default = router;

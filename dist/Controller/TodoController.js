@@ -24,7 +24,6 @@ const loadHome = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.loadHome = loadHome;
 const addTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(req.params, 'this is from controller');
         let title = req.params.title;
         manager.addTask(title);
         res.sendStatus(200);
@@ -36,7 +35,7 @@ const addTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.addTask = addTask;
 const deleteTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let id = parseInt(req.params.id);
+        let id = parseInt(req.params.taskId);
         manager.deleteTask(id);
         res.sendStatus(200);
     }
@@ -47,7 +46,7 @@ const deleteTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deleteTask = deleteTask;
 const completeTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let id = req.body.id;
+        let id = parseInt(req.params.taskId);
         manager.completeTask(id);
         res.sendStatus(200);
     }
@@ -57,6 +56,7 @@ const completeTask = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.completeTask = completeTask;
 const editTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log(req.params, 'this is reqbody from edit');
         let id = parseInt(req.params.id);
         let title = req.params.title;
         manager.editTask(id, title);

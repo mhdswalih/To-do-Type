@@ -38,7 +38,7 @@ export const deleteTask = async(req:Request,res:Response)=>{
 
 export const completeTask = async(req:Request,res:Response)=>{
     try {
-        let id: number =parseInt(req.params.id);
+        let id: number =parseInt(req.params.taskId);
         manager.completeTask(id);
         res.sendStatus(200)
     } catch (error) {
@@ -47,11 +47,9 @@ export const completeTask = async(req:Request,res:Response)=>{
 }
 
 export const editTask = async(req:Request,res:Response)=>{
-    try {
-        console.log(req.params,'this is reqbody from edit');
-        
-        let id: number = parseInt(req.body.id);
-        let title :string = req.body.title;
+    try {        
+        let id: number = parseInt(req.params.id);
+        let title :string = req.params.title;
         manager.editTask(id,title);
         res.sendStatus(200)
     } catch (error) {

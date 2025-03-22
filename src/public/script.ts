@@ -1,13 +1,13 @@
 const addForm = document.getElementById('addForm') as HTMLFormElement;
 const taskList = document.getElementById('todoUl') as HTMLUListElement;
-console.log(addForm,'this is task list');
+
 
 
 // Add Task
 addForm.addEventListener('submit', async (event: Event) => {
     event.preventDefault();
     const input = document.getElementById('todotext') as HTMLInputElement;
-    console.log(input.value,'this is add tak');
+   
     let title = input.value;
     if (title.trim()) {
         const response = await fetch(`/add-task/${title}`, {
@@ -35,6 +35,8 @@ taskList.addEventListener('click', async (event: Event) => {
     const doneButton = target.closest('.done-action');
     const editButton = target.closest('.edit-action');
     const saveButton = target.closest('.save-btn');
+   
+    
 
     if (deleteButton) {
         // Delete Task
@@ -55,7 +57,7 @@ taskList.addEventListener('click', async (event: Event) => {
     } else if (doneButton) {
         // Toggle Task Status
         const taskId = doneButton.getAttribute('data-task-id');
-        const response = await fetch(`/complete-task${taskId}`, {
+        const response = await fetch(`/complete-task/${taskId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -72,14 +74,20 @@ taskList.addEventListener('click', async (event: Event) => {
         // Edit Task
 
         const id = editButton.getAttribute('data-task-id');
+       
+        
         const spanElement = document.getElementById(`task-title-${id}`) as HTMLElement;
+       
+        
         
         const inputElement = document.createElement('input');
+      
+        
         inputElement.type = 'text';
         inputElement.value = spanElement.innerText;
         inputElement.id = `edit-input-${id}`;
         spanElement.replaceWith(inputElement);
-        console.log(inputElement.value,'this is input elemnt value ');
+      
         
         inputElement.focus();
 
@@ -91,13 +99,14 @@ taskList.addEventListener('click', async (event: Event) => {
         // Save Edited Task
         const id = saveButton.getAttribute('data-task-id');
         const title = (document.getElementById(`edit-input-${id}`)) as HTMLInputElement;
-
-        const response = await fetch(`/edit-task`, {
+       
+        
+        const response = await fetch(`/edit-task/${id}/${title.value}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: id, title: title.value })
+            // body: JSON.stringify({ id: id, title: title.value })
         });
 
         if (response.ok) {
